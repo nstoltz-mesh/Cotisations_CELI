@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur CELI - Droits de cotisation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Section Formulaire -->
+        <div class="card">
+            <h2>Calculer mes droits de cotisation CELI</h2>
+            <form id="celiForm">
+                <div class="form-group">
+                    <label for="birthYear">Année de naissance</label>
+                    <input type="number" id="birthYear" min="1900" max="2025" placeholder="Ex: 1990" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentYear">Année courante</label>
+                    <input type="number" id="currentYear" min="2009" max="2030" value="2025" required>
+                </div>
+
+                <button type="submit" class="btn-primary">Calculer mes droits CELI</button>
+            </form>
+        </div>
+
+        <!-- Section Comment ça fonctionne -->
+        <div class="card">
+            <h3>Comment ça fonctionne ?</h3>
+            <div class="info-section">
+                <h4>Conditions d'éligibilité :</h4>
+                <ul>
+                    <li>Avoir 18 ans ou plus</li>
+                    <li>Être résident canadien</li>
+                    <li>Posséder un numéro d'assurance sociale (NAS) valide</li>
+                    <li>Les droits s'accumulent depuis l'année de vos 18 ans</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section Résultats -->
+        <div id="results" class="card" style="display: none;">
+            <h3>Vos droits de cotisation CELI</h3>
+            <div class="result-summary">
+                <div class="total-amount">
+                    <span class="label">Total des droits :</span>
+                    <span id="totalAmount" class="amount">0 $</span>
+                </div>
+                <div class="eligible-since">
+                    <span>Éligible depuis : <span id="eligibleYear"></span></span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h4>Détail par année</h4>
+                <table id="detailTable">
+                    <thead>
+                        <tr>
+                            <th>Année</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer">
+            <p>Les droits de cotisation peuvent varier en fonction des retraits effectués. Ce calculateur présente les droits de cotisation maximaux théoriques.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
