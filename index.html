@@ -3,292 +3,411 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur CELI - Droits de Cotisation</title>
+    <title>Calculateur CELI 2025-2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @font-face {
+            font-family: 'FKGroteskNeue';
+            src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+        }
+
+        :root {
+            --color-background:   #ffffff;
+            --color-surface:      #f5f7f5;
+            --color-text:         #00221c;
+            --color-text-secondary: #749670;
+            --color-text-light:   rgba(0,34,28,0.65);
+            --color-primary:      #018476;
+            --color-primary-dark: #00221c;
+            --color-primary-hover:#4e7a51;
+            --color-secondary:    #dce8dc;
+            --color-secondary-hover: #c8d8c8;
+            --color-border:       #c8d8c8;
+            --color-card-border:  #c8d8c8;
+            --color-error:        #c0152f;
+            --color-error-bg:     #fef2f2;
+            --ns-secondary:       #A5cfe3;
+            --ns-dark:            #00221c;
+            --font-family-base:   'FKGroteskNeue', 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-family-display:'Playfair Display', Georgia, serif;
+            --shadow-sm:  0 1px 3px rgba(0,34,28,0.04), 0 1px 2px rgba(0,34,28,0.02);
+            --shadow-md:  0 4px 12px rgba(0,34,28,0.06);
+            --shadow-lg:  0 8px 24px rgba(0,34,28,0.10);
+            --radius-base: 8px;
+            --radius-lg:   12px;
+            --duration-fast: 150ms;
+            --ease-standard: cubic-bezier(0.16,1,0.3,1);
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        html {
+            font-family: var(--font-family-base);
+            font-size: 14px;
+            color: var(--color-text);
+            background: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #FFFFFF;
-            color: #00221c;
-            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-background);
+            color: var(--color-text);
         }
 
+        /* ── HEADER ─────────────────────────────────────────────── */
+        .app-header {
+            width: 100%;
+            background: linear-gradient(135deg, #00221c 0%, #018476 100%);
+            padding: 48px 64px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .app-header__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 720px;
+        }
+        .app-header__title {
+            font-family: var(--font-family-display);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            line-height: 1.2;
+        }
+        .app-header__subtitle {
+            font-size: 0.92rem;
+            color: #A5cfe3;
+            margin: 0;
+            max-width: 520px;
+            line-height: 1.65;
+        }
+
+        @media (max-width: 768px) {
+            .app-header { padding: 32px 24px; }
+            .app-header__title { font-size: 1.6rem; }
+        }
+
+        /* ── LAYOUT ─────────────────────────────────────────────── */
+        .main-content-wrap {
+            flex: 1;
+            padding: 32px 0;
+        }
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 24px;
         }
-
-        .main-content {
+        .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
         }
 
+        /* ── CARDS ──────────────────────────────────────────────── */
         .card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e5e7eb;
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-card-border);
+            transition: box-shadow var(--duration-fast) var(--ease-standard);
         }
+        .card:hover { box-shadow: var(--shadow-md); }
 
         .card h2 {
-            color: #4e7a51;
-            font-size: 1.5rem;
+            color: var(--color-primary-dark);
+            font-size: 1.15rem;
             margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--color-border);
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
-        .form-group {
-            margin-bottom: 20px;
+        .card h3 {
+            color: var(--color-primary-dark);
+            font-size: 1rem;
+            margin-bottom: 16px;
         }
 
+        /* ── FORMULAIRE ─────────────────────────────────────────── */
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
-            color: #4e7a51;
+            color: var(--color-primary);
+            font-size: 0.92rem;
         }
-
-        .form-group input, .form-group select {
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            padding: 10px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: 0.95rem;
+            font-family: var(--font-family-base);
+            background: var(--color-background);
+            color: var(--color-text);
+            transition: border-color var(--duration-fast) var(--ease-standard),
+                        box-shadow var(--duration-fast) var(--ease-standard);
         }
-
-        .form-group input:focus, .form-group select:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
-            border-color: #4e7a51;
-            box-shadow: 0 0 0 3px rgba(78, 122, 81, 0.1);
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(1,132,118,0.2);
         }
 
+        /* ── BOUTON ─────────────────────────────────────────────── */
         .btn {
-            background: #4e7a51;
-            color: white;
+            background: var(--color-primary);
+            color: #ffffff;
             border: none;
-            padding: 14px 30px;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: var(--radius-base);
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
             width: 100%;
+            font-family: var(--font-family-base);
+            transition: background var(--duration-fast) var(--ease-standard),
+                        box-shadow var(--duration-fast) var(--ease-standard);
         }
-
         .btn:hover {
-            background: #018476;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(78, 122, 81, 0.3);
+            background: var(--color-primary-hover);
+            box-shadow: var(--shadow-md);
         }
 
+        /* ── LISTE INFO ─────────────────────────────────────────── */
+        .info-list { list-style: none; padding: 0; }
+        .info-list li {
+            margin-bottom: 14px;
+            padding-left: 24px;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            line-height: 1.55;
+        }
+        .info-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        /* ── RÉSULTATS ──────────────────────────────────────────── */
         .results {
             grid-column: span 2;
+            display: none;
+        }
+        .results.visible { display: block; }
+        @media (max-width: 768px) {
+            .results { grid-column: span 1; }
         }
 
         .results-summary {
-            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 30px;
+            background: linear-gradient(135deg, #00221c 0%, #018476 100%);
+            color: #ffffff;
+            padding: 28px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
             text-align: center;
         }
-
         .total-amount {
+            font-family: var(--font-family-display);
             font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            line-height: 1;
         }
-
         .results-details {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 0.95rem;
+            color: #A5cfe3;
         }
 
+        /* ── TABLEAU DÉTAIL ─────────────────────────────────────── */
         .breakdown-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-            border-radius: 12px;
+            margin-top: 16px;
+            background: var(--color-background);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-card-border);
         }
-
-        .breakdown-table th, .breakdown-table td {
-            padding: 15px;
+        .breakdown-table th,
+        .breakdown-table td {
+            padding: 12px 16px;
             text-align: left;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.88rem;
         }
-
         .breakdown-table th {
-            background: #4e7a51;
-            color: white;
+            background: var(--color-primary-dark);
+            color: #ffffff;
             font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
-        .breakdown-table tr:hover {
-            background: #f9fafb;
+        .breakdown-table tbody tr:nth-child(even) td {
+            background: var(--color-surface);
         }
-
+        .breakdown-table tbody tr:hover td {
+            background: var(--color-secondary);
+            transition: background var(--duration-fast) var(--ease-standard);
+        }
         .amount {
             font-weight: 600;
-            color: #018476;
+            color: var(--color-primary);
+        }
+        .eligible-badge {
+            color: var(--color-primary);
+            font-weight: 600;
         }
 
+        /* ── ERREUR ─────────────────────────────────────────────── */
         .error {
-            background: #fef2f2;
-            color: #dc2626;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #dc2626;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 30px;
-            color: #6b7280;
-            border-top: 1px solid #e5e7eb;
-            margin-top: 40px;
-        }
-
-        .disclaimer {
-            background: #A5cfe3;
-            color: #4e7a51;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 30px 0 20px 0;
-            text-align: center;
+            background: var(--color-error-bg);
+            color: var(--color-error);
+            padding: 14px 16px;
+            border-radius: var(--radius-base);
+            margin-top: 16px;
+            border-left: 4px solid var(--color-error);
             font-size: 0.9rem;
-            border: 1px solid #A5cfe3;
+        }
+        .hidden { display: none; }
+
+        /* ── DISCLAIMER ─────────────────────────────────────────── */
+        .disclaimer-box {
+            background: var(--color-surface);
+            color: var(--color-text-light);
+            padding: 16px 20px;
+            border-radius: var(--radius-base);
+            margin: 24px 0 8px 0;
+            font-size: 0.82rem;
+            border: 1px solid var(--color-card-border);
+            text-align: center;
+            line-height: 1.6;
         }
 
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .results {
-                grid-column: span 1;
-            }
-            
-            .total-amount {
-                font-size: 2.5rem;
-            }
+        /* ── FOOTER ─────────────────────────────────────────────── */
+        .footer {
+            background: var(--color-surface);
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid var(--color-border);
+            font-size: 0.78rem;
+            color: var(--color-text-secondary);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="main-content">
-            <div class="card">
-                <h2>📊 Informations personnelles</h2>
-                <form id="celiForm">
-                    <div class="form-group">
-                        <label for="birthDate">Date de naissance :</label>
-                        <input type="date" id="birthDate" name="birthDate">
+
+    <!-- HEADER GRADIENT CENTRÉ -->
+    <header class="app-header">
+        <div class="app-header__content">
+            <h1 class="app-header__title">Calculateur de droits CELI</h1>
+            <p class="app-header__subtitle">Estimez vos droits de cotisation cumulatifs · Plafonds officiels 2009–2026 · Résidents canadiens</p>
+        </div>
+    </header>
+
+    <div class="main-content-wrap">
+        <div class="container">
+            <div class="main-grid">
+
+                <!-- Formulaire -->
+                <div class="card">
+                    <h2>📊 Informations personnelles</h2>
+                    <form id="celiForm">
+                        <div class="form-group">
+                            <label for="birthDate">Date de naissance :</label>
+                            <input type="date" id="birthDate" name="birthDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="currentYear">Année courante :</label>
+                            <input type="number" id="currentYear" name="currentYear" value="2026" min="2009" max="2030">
+                        </div>
+                        <button type="submit" class="btn" id="calculateBtn">
+                            Calculer mes droits CELI
+                        </button>
+                    </form>
+                    <div id="errorMessage" class="error hidden"></div>
+                </div>
+
+                <!-- Explication -->
+                <div class="card">
+                    <h2>ℹ️ Comment ça fonctionne ?</h2>
+                    <ul class="info-list">
+                        <li>Avoir <strong>18 ans ou plus</strong> au 1er janvier de l'année de cotisation</li>
+                        <li>Être <strong>résident canadien</strong> avec un NAS valide</li>
+                        <li>Les droits s'accumulent depuis l'année de vos 18 ans (min. 2009)</li>
+                        <li>Les <strong>retraits</strong> s'ajoutent aux droits de l'année suivante</li>
+                        <li>Plafond 2026 : <strong>7 000 $</strong> (confirmé ARC)</li>
+                    </ul>
+                </div>
+
+                <!-- Résultats (span 2) -->
+                <div id="results" class="card results">
+                    <div id="resultsSummary" class="results-summary">
+                        <div class="total-amount" id="totalAmount">0 $</div>
+                        <div class="results-details" id="resultsDetails"></div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="currentYear">Année courante :</label>
-                        <input type="number" id="currentYear" name="currentYear" value="2025" min="2009" max="2030">
+                    <div>
+                        <h3>📋 Détail par année</h3>
+                        <table class="breakdown-table" id="breakdownTable">
+                            <thead>
+                                <tr>
+                                    <th>Année</th>
+                                    <th>Âge</th>
+                                    <th>Plafond de cotisation</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody id="breakdownBody"></tbody>
+                        </table>
                     </div>
-                    
-                    <button type="submit" class="btn" id="calculateBtn">
-                        Calculer mes droits CELI
-                    </button>
-                </form>
-                
-                <div id="errorMessage" class="error hidden"></div>
+                </div>
+
             </div>
-            
-            <div class="card">
-                <h2>ℹ️ Comment ça fonctionne ?</h2>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 15px; padding-left: 25px; position: relative;">
-                        <span style="position: absolute; left: 0; color: #018476; font-weight: bold;">✓</span>
-                        Avoir 18 ans ou plus
-                    </li>
-                    <li style="margin-bottom: 15px; padding-left: 25px; position: relative;">
-                        <span style="position: absolute; left: 0; color: #018476; font-weight: bold;">✓</span>
-                        Être résident canadien
-                    </li>
-                    <li style="margin-bottom: 15px; padding-left: 25px; position: relative;">
-                        <span style="position: absolute; left: 0; color: #018476; font-weight: bold;">✓</span>
-                        Posséder un numéro d'assurance sociale (NAS) valide
-                    </li>
-                    <li style="margin-bottom: 15px; padding-left: 25px; position: relative;">
-                        <span style="position: absolute; left: 0; color: #018476; font-weight: bold;">✓</span>
-                        Les droits s'accumulent depuis l'année de vos 18 ans
-                    </li>
-                </ul>
+
+            <div class="disclaimer-box">
+                Les droits de cotisation peuvent varier en fonction des retraits effectués. Ce calculateur présente les droits de cotisation maximaux théoriques. Consultez Mon Dossier ARC pour connaître vos droits réels.
             </div>
         </div>
-        
-        <div id="results" class="card results hidden">
-            <div id="resultsSummary" class="results-summary">
-                <div class="total-amount" id="totalAmount">0 $</div>
-                <div class="results-details" id="resultsDetails"></div>
-            </div>
-            
-            <div>
-                <h3 style="color: #4e7a51; margin-bottom: 20px;">📋 Détail par année</h3>
-                <table class="breakdown-table" id="breakdownTable">
-                    <thead>
-                        <tr>
-                            <th>Année</th>
-                            <th>Âge</th>
-                            <th>Plafond de cotisation</th>
-                            <th>Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody id="breakdownBody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <div class="disclaimer">
-            <p>Les droits de cotisation peuvent varier en fonction des retraits effectués. Ce calculateur présente les droits de cotisation maximaux théoriques.</p>
-        </div>
-        
-        <footer class="footer">
-            <p>© 2025 - Calculateur CELI | Données basées sur les plafonds officiels de l'Agence du revenu du Canada</p>
-        </footer>
     </div>
+
+    <footer class="footer">
+        <p>© 2026 · Calculateur CELI · Données basées sur les plafonds officiels de l'Agence du revenu du Canada</p>
+    </footer>
 
     <script>
         const celiData = {
             2009: 5000, 2010: 5000, 2011: 5000, 2012: 5000, 2013: 5500,
             2014: 5500, 2015: 10000, 2016: 5500, 2017: 5500, 2018: 5500,
             2019: 6000, 2020: 6000, 2021: 6000, 2022: 6000, 2023: 6500,
-            2024: 7000, 2025: 7000
+            2024: 7000, 2025: 7000, 2026: 7000
         };
 
-        const AGE_MINIMUM = 18;
+        const AGE_MINIMUM  = 18;
         const PREMIERE_ANNEE = 2009;
-
-        let calculationResults = {
-            totalAmount: 0, eligibilityYear: null, breakdown: [],
-            birthYear: null, currentAge: 0
-        };
 
         document.getElementById('celiForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -296,84 +415,74 @@
         });
 
         function calculateCELI() {
-            const birthDate = document.getElementById('birthDate').value;
+            const birthDate  = document.getElementById('birthDate').value;
             const currentYear = parseInt(document.getElementById('currentYear').value);
-            const errorDiv = document.getElementById('errorMessage');
+            const errorDiv   = document.getElementById('errorMessage');
             errorDiv.classList.add('hidden');
-            
-            if (!birthDate) {
-                showError('Veuillez entrer votre date de naissance.');
-                return;
-            }
-            
+
+            if (!birthDate) { showError('Veuillez entrer votre date de naissance.'); return; }
             if (currentYear < PREMIERE_ANNEE || currentYear > 2030) {
-                showError('L\'année courante doit être entre 2009 et 2030.');
-                return;
+                showError("L'année courante doit être entre 2009 et 2030."); return;
             }
-            
-            const birthYear = new Date(birthDate).getFullYear();
-            const currentAge = currentYear - birthYear;
+
+            const birthYear      = new Date(birthDate).getFullYear();
+            const currentAge     = currentYear - birthYear;
             const eligibilityYear = birthYear + AGE_MINIMUM;
-            
+
             if (currentAge < 0 || currentAge > 120) {
-                showError('L\'âge calculé semble incorrect. Vérifiez votre date de naissance.');
-                return;
+                showError("L'âge calculé semble incorrect. Vérifiez votre date de naissance."); return;
             }
-            
             if (currentAge < AGE_MINIMUM) {
-                showError(`Vous n'êtes pas encore éligible au CELI. Vous devez avoir au moins ${AGE_MINIMUM} ans.`);
-                return;
+                showError(`Vous n'êtes pas encore éligible au CELI. Vous devez avoir au moins ${AGE_MINIMUM} ans.`); return;
             }
-            
+
             let totalAmount = 0;
             const breakdown = [];
             const startYear = Math.max(eligibilityYear, PREMIERE_ANNEE);
-            
+
             for (let year = startYear; year <= currentYear; year++) {
-                if (celiData[year]) {
-                    const age = year - birthYear;
+                if (celiData[year] !== undefined) {
+                    const age    = year - birthYear;
                     const amount = celiData[year];
                     totalAmount += amount;
-                    breakdown.push({year, age, amount, eligible: age >= AGE_MINIMUM});
+                    breakdown.push({ year, age, amount, eligible: age >= AGE_MINIMUM });
                 }
             }
-            
-            calculationResults = {totalAmount, eligibilityYear, breakdown, birthYear, currentAge};
-            displayResults();
+
+            displayResults({ totalAmount, eligibilityYear, breakdown, birthYear, currentAge });
         }
-        
+
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
             errorDiv.classList.remove('hidden');
         }
-        
-        function displayResults() {
-            const { totalAmount, eligibilityYear, breakdown, currentAge } = calculationResults;
+
+        function displayResults({ totalAmount, eligibilityYear, breakdown, currentAge }) {
             document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
-            
-            const eligibleYears = breakdown.length;
-            const detailsText = `Droits accumulés sur ${eligibleYears} année${eligibleYears > 1 ? 's' : ''} depuis ${eligibilityYear} (âge actuel: ${currentAge} ans)`;
-            document.getElementById('resultsDetails').textContent = detailsText;
-            
+
+            const n = breakdown.length;
+            document.getElementById('resultsDetails').textContent =
+                `Droits accumulés sur ${n} année${n > 1 ? 's' : ''} depuis ${eligibilityYear} · Âge actuel : ${currentAge} ans`;
+
             const tbody = document.getElementById('breakdownBody');
             tbody.innerHTML = '';
-            
             breakdown.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td><strong>${item.year}</strong></td>
                     <td>${item.age} ans</td>
                     <td class="amount">${formatCurrency(item.amount)}</td>
-                    <td><span style="color: #018476; font-weight: 600;">✓ Éligible</span></td>
+                    <td><span class="eligible-badge">✓ Éligible</span></td>
                 `;
                 tbody.appendChild(row);
             });
-            
-            document.getElementById('results').classList.remove('hidden');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+            const resultsEl = document.getElementById('results');
+            resultsEl.classList.add('visible');
+            resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-        
+
         function formatCurrency(amount) {
             return new Intl.NumberFormat('fr-CA', {
                 style: 'currency', currency: 'CAD',
